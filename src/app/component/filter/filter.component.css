@@ -1,0 +1,16 @@
+.filter-group {
+  background-color: white;
+
+  box-shadow: var(--box-shadow);
+  border-radius: 10px;
+}
+.filter-control {
+  width: 30%;
+  height: 6em;
+}
+.filter-groups {
+  height: 7em;
+}
+button {
+  margin: top 1em;
+}

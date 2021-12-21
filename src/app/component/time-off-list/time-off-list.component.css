@@ -1,0 +1,68 @@
+.list-time-off {
+  background-color: #ffffff;
+  box-shadow: var(--box-shadow);
+  padding: 30px 20px;
+  text-align: center;
+  border-radius: 1rem;
+  margin-top: 1rem;
+  min-height: 36em;
+}
+.list-time-off h3 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 15px 0;
+}
+th {
+  color: var(--primary-color);
+}
+::ng-deep .tooltip-inner {
+  font-size: 16px;
+  white-space: pre-line;
+}
+@media only screen and (max-width: 768px) {
+  table thead {
+    display: none;
+  }
+  table tbody,
+  table tbody tr {
+    display: block;
+    width: 100%;
+  }
+  table tbody tr th::before,
+  table tbody tr td::before {
+    content: attr(data-title);
+    font-weight: bold;
+    color: #6bae2d;
+    text-align: left;
+  }
+  table tbody tr td {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+  table tbody tr th {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  table tbody tr {
+    margin-bottom: 16px;
+  }
+}
+@media only screen and (max-width: 480px) {
+  table tbody tr th::before,
+  table tbody tr td::before {
+    text-align: center;
+  }
+  table tbody tr td {
+    flex-direction: column;
+  }
+  table tbody tr th {
+    flex-direction: column;
+  }
+  .list-time-off {
+    max-height: 576px;
+    overflow: scroll;
+  }
+}

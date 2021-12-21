@@ -1,0 +1,197 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb" style="padding: 0; margin: 0">
+    <li class="breadcrumb-item"><a [routerLink]="['/']">Trang chủ</a></li>
+    <li class="breadcrumb-item active" aria-current="page">
+      Danh sách thưởng phạt
+    </li>
+  </ol>
+</nav>
+<div class="main_content">
+  <div class="tabs">
+    <input (click)="reloadPage($event)" hidden type="radio" name="tab-css" id="tab-1" checked />
+    <label class="tab-control" for="tab-1">Danh sách thưởng phạt</label>
+    <input (click)="reloadPageTrash($event)" hidden type="radio" name="tab-css" id="tab-2" />
+    <label class="tab-control" for="tab-2">Thùng rác</label>
+    <div class="tab-content">
+      <div id="tab-panel-1" class="tab-panel">
+        <div class="prize-fine-money">
+          <div class="header_fine_money">
+            <h3 class="text-center">
+              Danh sách thưởng phạt
+              <a [routerLink]="['/', 'prize-fine-add']"
+                ><span title="Thêm mới" class="material-icons-outlined">
+                  add_circle_outline
+                </span></a
+              >
+            </h3>
+
+            <!-- <a [routerLink]="['/', 'trash-prize-fine']"
+            ><span title="Thùng rác" class="material-icons"> delete_sweep </span></a
+          > -->
+          </div>
+
+          <table class="table" *ngIf="list_prize_fine.length > 0">
+            <thead>
+              <th>
+                <input
+                  *ngIf="list_prize_fine.length > 0"
+                  type="checkbox"
+                  [value]="listID"
+                  (change)="checkValue($event)"
+                  [checked]="checkAllList"
+                />
+              </th>
+              <th>#</th>
+              <th>Họ tên</th>
+              <th>Nội dung thưởng phạt</th>
+              <!-- <th>Ngày</th> -->
+              <th>Tiền thưởng</th>
+              <th>Tiền phạt</th>
+              <th>Hành động</th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let prize of list_prize_fine; index as i">
+                <td>
+                  <input
+                    type="checkbox"
+                    [checked]="checks"
+                    [value]="prize.id"
+                    (change)="checkResult($event)"
+                  />
+                </td>
+                <td data-title="#">{{ i + 1 }}</td>
+                <td data-title="User Name">{{ prize.full_name }}</td>
+                <td data-title="Prize-Fine Name">{{ prize.name }}</td>
+                <!-- <td data-title="Date"></td> -->
+                <td *ngIf="prize.prize_money > 0" data-title="Prize">{{ prize.prize_money | currency: "VND":"symbol":"1.0-0":"vi-VN"}}</td>
+                <td *ngIf="prize.prize_money == null || prize.prize_money == 0">0 đ</td>
+                <td *ngIf="prize.fine_money >0" data-title="Fine">{{prize.fine_money | currency: "VND":"symbol":"1.0-0":"vi-VN" }}</td>
+                <td *ngIf="prize.fine_money == null || prize.fine_money == 0">0 đ</td>
+                <td data-title="Action">
+                  <a 
+                    [routerLink]="['/', 'prize-fine-edit', prize.id]"
+                    class="btn btn-primary"
+                    ><span title="Chỉnh sửa" class="material-icons">
+                      edit_note
+                    </span></a
+                  >
+                  <button [disabled]="checks"
+                    class="btn btn-danger"
+                    (click)="handleDelete(prize.id, i)"
+                  >
+                    <span title="Xóa" class="material-icons">
+                      delete_forever
+                    </span>
+                  </button>
+                </td>
+              </tr>
+             
+            </tbody>
+          </table>
+          <div *ngIf="listID.length > 0">
+            <button
+              (click)="deleteAll()"
+              class="btn btn-danger"
+              style="max-width: 100px; margin-top: 10px"
+            >
+              Xóa tất cả
+            </button>
+          </div>
+          <table *ngIf="list_prize_fine.length == 0">
+            <p style="padding-left: 1rem">Danh sách rỗng</p>
+          </table>
+          <ngb-pagination class="d-flex justify-content-end" [collectionSize]="collectionSize" [(page)]="page" [maxSize]="5"
+          [rotate]="true" [ellipses]="false" [boundaryLinks]="true" [pageSize]="pageSize"
+          (pageChange)="handlePaginate($event)"></ngb-pagination>
+        </div>
+      </div>
+      <div id="tab-panel-2" class="tab-panel">
+        <div class="trash-prize-fine">
+          <h3>Thùng Rác</h3>
+          <table *ngIf="listAllDeletePrize.length > 0" class="table">
+            <thead>
+              <th>
+                <input
+                  *ngIf="listAllDeletePrize.length > 0"
+                  type="checkbox"
+                  [value]="listIDDelete"
+                  (change)="checkValueDelete($event)"
+                  [checked]="checkAllDelete"
+                />
+              </th>
+              <th>#</th>
+              <th>Họ tên</th>
+              <th>Nội dung</th>
+              <th>Tiền thưởng</th>
+              <th>Tiền phạt</th>
+              <th>Hành động</th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let prize of listAllDeletePrize; index as i">
+                <td>
+                  <input
+                    type="checkbox"
+                    [checked]="checkDelete"
+                    [value]="prize.id"
+                    (change)="checkResultDelete($event)"
+                  />
+                </td>
+                <td>{{ i + 1 }}</td>
+                <td>{{ prize.full_name }}</td>
+                <td>{{ prize.name }}</td>
+                <td *ngIf="prize.prize_money > 0">{{ prize.prize_money | currency: "VND":"symbol":"1.0-0":"vi-VN" }}</td>
+                <td *ngIf="prize.prize_money == null || prize.prize_money == 0">0 đ</td>
+                <td *ngIf="prize.fine_money > 0">{{ prize.fine_money | currency: "VND":"symbol":"1.0-0":"vi-VN"}}</td>
+                <td *ngIf="prize.fine_money == null || prize.fine_money == 0">0 đ</td>
+                <td>
+                  <button
+                    class="btn btn-danger"
+                    (click)="handleDestroy(prize.id, i)"
+                  >
+                    <span title="Xóa vĩnh viễn" class="material-icons">
+                      delete_forever
+                    </span>
+                  </button>
+                  <button
+                    class="btn btn-success"
+                    (click)="handeRestore(prize.id, i)"
+                  >
+                    <span title="Khôi phục" class="material-icons">
+                      settings_backup_restore
+                    </span>
+                  </button>
+                </td>
+              </tr>
+             
+            </tbody>
+          </table>
+         
+          <div *ngIf="listIDDelete.length > 0">
+            <button
+              (click)="destroyAll()"
+              class="btn btn-danger"
+              style="max-width: 100px; margin-top: 10px"
+            >
+              Xóa tất cả
+            </button>
+            <button
+              (click)="restoreAll()"
+              class="btn btn-success"
+              style="max-width: 150px; margin-top: 10px"
+            >
+              Khôi phục tất cả
+            </button>
+          </div>
+          <table *ngIf="listAllDeletePrize.length == 0">
+            <p style="padding-left: 1rem">Thùng rác rỗng</p>
+          </table>
+          <ngb-pagination class="d-flex justify-content-end" [collectionSize]="collectionSize" [(page)]="page" [maxSize]="5"
+          [rotate]="true" [ellipses]="false" [boundaryLinks]="true" [pageSize]="pageSize"
+          (pageChange)="handlePaginate2($event)"></ngb-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- paginate -->

@@ -1,0 +1,165 @@
+.main_content {
+  background-color: #ffffff;
+  box-shadow: var(--box-shadow);
+  border-radius: 1rem;
+  margin-top: 1rem;
+  min-height: 36em;
+}
+
+h3 {
+  text-align: center;
+}
+
+.tab-control {
+  display: inline-block;
+  border-bottom: 2px solid transparent;
+  font-size: var(--text-md);
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.tabs {
+  padding: 1em;
+}
+
+.tab-control:hover {
+  color: var(--primary-color);
+}
+
+.tab-panel {
+  display: none;
+}
+
+/* Magic style */
+
+input[type="radio"]:checked + .tab-control {
+  font-weight: 600;
+  color: var(--primary-color);
+  border-bottom-color: var(--primary-color);
+}
+
+#tab-1:checked ~ .tab-content > #tab-panel-1 {
+  display: block;
+}
+
+#tab-2:checked ~ .tab-content > #tab-panel-2 {
+  display: block;
+}
+
+table button {
+  margin: 0 5px;
+}
+table th {
+  color: var(--primary-color);
+}
+.header_timeoff h3 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.header_timeoff a {
+  margin-right: 3rem;
+}
+.header_timeoff span {
+  font-size: 30px;
+  color: darkcyan;
+}
+table button {
+  margin: 0 5px;
+}
+table th {
+  color: var(--primary-color);
+}
+table button {
+  margin: 0 5px;
+}
+table th {
+  color: var(--primary-color);
+}
+.search {
+  width: 100%;
+  position: relative;
+  display: flex;
+}
+
+.searchTerm {
+  width: 35%;
+  border: 3px solid var(--primary-color);
+  border-right: none;
+  padding: 7px;
+  border-radius: 5px 0 0 5px;
+  outline: none;
+  color: var(--primary-color);
+}
+
+.searchTerm:focus {
+  color: #00b4cc;
+}
+
+.searchButton {
+  width: 40px;
+  height: 44px;
+  border: 1px solid #6bae2d;
+  background: var(--primary-color);
+  text-align: center;
+  color: #fff;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  font-size: 20px;
+}
+.header_timeoff {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+::ng-deep .tooltip-inner {
+  font-size: 16px;
+  white-space: pre-line;
+}
+@media only screen and (max-width: 768px) {
+  table thead {
+    display: none;
+  }
+  table tbody,
+  table tbody tr {
+    display: block;
+    width: 100%;
+  }
+  table tbody tr th::before,
+  table tbody tr td::before {
+    content: attr(data-title);
+    font-weight: bold;
+    color: #6bae2d;
+    text-align: left;
+  }
+  table tbody tr td {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+  table tbody tr th {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  table tbody tr {
+    margin-bottom: 16px;
+  }
+}
+@media only screen and (max-width: 480px) {
+  table tbody tr th::before,
+  table tbody tr td::before {
+    text-align: center;
+  }
+  table tbody tr td {
+    flex-direction: column;
+  }
+  table tbody tr th {
+    flex-direction: column;
+  }
+  .time-off {
+    max-height: 576px;
+    overflow: scroll;
+  }
+}

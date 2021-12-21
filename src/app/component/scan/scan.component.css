@@ -1,0 +1,32 @@
+.scanner {
+  padding: 1em;
+  background-color: whitesmoke;
+  border-radius: 10px;
+  box-shadow: var(--box-shadow);
+  min-height: 36em;
+}
+.scan_camera {
+  padding: 3em;
+}
+.my-custom-scrollbar {
+  position: relative;
+  min-height: 25em;
+  overflow: auto;
+}
+.table-wrapper-scroll-y {
+  display: block;
+  margin-top: 5.5em;
+}
+.loading {
+  background: black;
+  width: 497px;
+  height: 372px;
+  top: 90px;
+  left: 62px;
+  position: absolute;
+}
+.card {
+  border-radius: 10px;
+  box-shadow: var(--box-shadow);
+  padding: 1em;
+}

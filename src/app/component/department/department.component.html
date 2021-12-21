@@ -1,0 +1,48 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb" style="padding: 0; margin: 0">
+    <li class="breadcrumb-item"><a [routerLink]="['/']">Trang chủ</a></li>
+    <li class="breadcrumb-item active" aria-current="page">
+      Danh sách phòng ban
+    </li>
+  </ol>
+</nav>
+
+<div class="departments">
+  <h3 class="text-center">
+    Danh sách phòng ban<a [routerLink]="['/', 'department-form']"
+      ><span class="material-icons-outlined"> add_circle_outline </span></a
+    >
+  </h3>
+  <div class="row">
+    <table class="table">
+      <thead>
+        <th>#</th>
+        <th>Tên danh sách</th>
+        <th>Thao tác</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let department of departments; index as i">
+          <td data-title="#">{{ department.id }}</td>
+          <td data-title="Name">{{ department.name }}</td>
+          <td data-title="Action">
+            <div class="depa">
+              <a
+                class="btn btn-primary btn-bt"
+                [routerLink]="['/', 'department-edit', department.id]"
+                ><span title="Chỉnh sửa" class="material-icons">
+                  edit_note
+                  </span></a
+              >
+              <!-- <button
+                class="btn btn-danger"
+                (click)="handleDelete(department.id, i)"
+              >
+                Delete
+              </button> -->
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

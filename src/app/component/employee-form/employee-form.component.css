@@ -1,0 +1,52 @@
+.addEmployee {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  box-shadow: var(--box-shadow);
+  padding: 30px 20px;
+  margin-top: 1rem;
+  min-height: 36em;
+}
+h3 {
+  margin-bottom: 20px;
+}
+.addEmployee button {
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+.gender {
+  display: flex;
+  align-items: center;
+}
+.gender .female{
+  margin-left: 8px;
+}
+.gender input{
+  margin-left: 4px;
+  margin-bottom: 8px;
+}
+
+.form-check {
+  margin-right: 10px;
+}
+form {
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+input.ng-invalid.ng-touched {
+  border: 1px solid red;
+}
+.error{
+  color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    display: none;
+    padding: 12px 20px 12px 20px;
+}
+@media only screen and (max-width: 480px) {
+  form {
+    margin-left: unset;
+    transform: unset;
+  }
+}

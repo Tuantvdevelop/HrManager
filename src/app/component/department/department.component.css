@@ -1,0 +1,120 @@
+.departments {
+  background-color: #ffffff;
+  box-shadow: var(--box-shadow);
+  padding: 30px 20px;
+  text-align: center;
+  border-radius: 1rem;
+  margin-top: 1rem;
+  min-height: 36em;
+}
+.departments h3 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.departments h3 span {
+  padding-left: 20px;
+  color: var(--primary-color);
+  cursor: pointer;
+}
+.departments table {
+  margin: 20px 0;
+}
+
+table button {
+  margin: 0 5px;
+}
+table th {
+  color: var(--primary-color);
+}
+table button {
+  margin: 0 5px;
+}
+table th {
+  color: var(--primary-color);
+}
+.search {
+  width: 100%;
+  position: relative;
+  display: flex;
+}
+
+.searchTerm {
+  width: 35%;
+  border: 3px solid var(--primary-color);
+  border-right: none;
+  padding: 7px;
+  border-radius: 5px 0 0 5px;
+  outline: none;
+  color: var(--primary-color);
+}
+
+.searchTerm:focus {
+  color: #00b4cc;
+}
+
+.searchButton {
+  width: 40px;
+  height: 44px;
+  border: 1px solid #6bae2d;
+  background: var(--primary-color);
+  text-align: center;
+  color: #fff;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  font-size: 20px;
+}
+.btn-bt {
+  max-width: 71px;
+  width: 100%;
+}
+@media only screen and (max-width: 768px) {
+  .depa {
+    display: flex;
+    justify-content: center;
+  }
+  table thead {
+    display: none;
+  }
+  table tbody,
+  table tbody tr {
+    display: block;
+    width: 100%;
+  }
+  table tbody tr th::before,
+  table tbody tr td::before {
+    content: attr(data-title);
+    font-weight: bold;
+    color: #6bae2d;
+    text-align: left;
+  }
+  table tbody tr td {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+  table tbody tr th {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  table tbody tr {
+    margin-bottom: 16px;
+  }
+}
+@media only screen and (max-width: 480px) {
+  table tbody tr th::before,
+  table tbody tr td::before {
+    text-align: center;
+  }
+  table tbody tr td {
+    flex-direction: column;
+  }
+  table tbody tr th {
+    flex-direction: column;
+  }
+  .departments {
+    max-height: 576px;
+    overflow: scroll;
+  }
+}

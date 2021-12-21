@@ -1,0 +1,363 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a [routerLink]="['/']">Trang chủ</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+  </ol>
+</nav>
+<div class="dashboard" *ngIf="isAdmin">
+  <div class="row sumary__list mb-4">
+    <div class="col-3">
+      <div class="sumary__item people">
+        <span class="material-icons">people</span>
+
+        <div class="sumary__content">
+          <p class="sumary__count">{{ totalUsers }}</p>
+          <p class="sumary__desc">tổng số nhân viên</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="sumary__item group_work">
+        <span class="material-icons">group_work</span>
+
+        <div class="sumary__content">
+          <p class="sumary__count">{{ departments }}</p>
+          <p class="sumary__desc">tổng số Team</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="sumary__item group_add">
+        <span class="material-icons">group_add</span>
+
+        <div class="sumary__content">
+          <p class="sumary__count">{{ totalUserWorker }}</p>
+          <p class="sumary__desc">nhân viên có mặt</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="sumary__item group_off">
+        <span class="material-icons">group_off</span>
+
+        <div class="sumary__content">
+          <p class="sumary__count">{{ totalUsersOT }}</p>
+          <p class="sumary__desc">nhân viên tăng ca hôm qua</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr />
+  <div class="row">
+    <!-- task-list -->
+    <div class="col-8 col-12-md">
+      <!-- task-list -->
+      <div class="task-list">
+        <div class="task-list__header">
+          <h3><i class="fas fa-thumbtack"></i> Đơn yêu cầu mới nhất</h3>
+          <a href="#"><span class="material-icons">more_horiz</span> </a>
+        </div>
+        <div class="task-list__body">
+          <!-- xác nhận tăng ca -->
+          <div class="accept_ot">
+            <h5>Xác nhận tăng ca</h5>
+            <table
+              *ngIf="acceptOTList.length > 0"
+              class="table my-custom-scrollbar"
+            >
+              <thead>
+                <tr class="text-center">
+                  <th scope="col">#</th>
+                  <th scope="col">Lý do tăng ca</th>
+                  <th scope="col">Xác nhận</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  class="text-center"
+                  *ngFor="let confirm of acceptOTList; let i = index"
+                >
+                  <th scope="row">{{ i + 1 }}</th>
+                  <td>{{ confirm.note }}</td>
+                  <td>
+                    <div *ngIf="!loadAccept" class="task-list__link tex-center">
+                      <a
+                        (click)="handleAccept(confirm.id, i)"
+                        class="task-list__approve"
+                        ><span class="material-icons">done</span></a
+                      >
+                      <a
+                        (click)="handleNotAccept(confirm.id, i)"
+                        class="task-list__decline"
+                        ><span class="material-icons">thumb_down_off_alt</span>
+                      </a>
+                    </div>
+                    <div *ngIf="loadAccept" class="task-list__link tex-center">
+                      <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <table
+              *ngIf="acceptOTList.length == 0"
+              class="table my-custom-scrollbar"
+            >
+              <p class="text-center">Bạn không có lịch tăng ca hôm nay</p>
+            </table>
+          </div>
+
+          <div class="accept_time_off" *ngIf="isAdmin">
+            <h5>Xác nhận nghỉ phép</h5>
+            <table class="table my-custom-scrollbar">
+              <thead>
+                <tr class="text-center">
+                  <th scope="col">#</th>
+                  <th scope="col">Tên nhân viên</th>
+                  <th scope="col">Ảnh</th>
+                  <th scope="col">Lý do xin nghỉ</th>
+                  <th scope="col">Xác nhận</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  class="text-center"
+                  *ngFor="let confirm of confirmList; let i = index"
+                >
+                  <th scope="row">{{ confirm.id }}</th>
+                  <td>{{ confirm?.full_name }}</td>
+                  <td>
+                    <img
+                      [src]="
+                        confirm?.avatar
+                          ? confirm.avatar
+                          : 'https://ps.w.org/simple-user-avatar/assets/icon-256x256.png?rev=2413146'
+                      "
+                      alt="image"
+                      class="task-list__img"
+                    />
+                  </td>
+                  <td>{{ confirm.note }}</td>
+                  <td>
+                    <div
+                      *ngIf="!loadConfirm"
+                      class="task-list__link tex-center"
+                    >
+                      <a
+                        (click)="handleAprove(confirm.id, i)"
+                        class="task-list__approve"
+                        ><span class="material-icons">done</span></a
+                      >
+                      <a
+                        (click)="handleReject(confirm.id, i)"
+                        class="task-list__decline"
+                        ><span class="material-icons">thumb_down_off_alt</span>
+                      </a>
+                    </div>
+                    <div *ngIf="loadConfirm" class="task-list__link tex-center">
+                      <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="d-flex justify-content-center" *ngIf="loadListConfirm">
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+        <p
+          *ngIf="confirmList.length === 0 && !this.loadListConfirm"
+          class="d-flex justify-content-center align-items-center"
+        >
+          Không có đơn nào
+        </p>
+      </div>
+      <!-- end-task-list -->
+    </div>
+    <!-- end task list -->
+    <div class="col-4 col-12-md">
+      <div class="team-chart">
+        <div class="team-chart__header">
+          <p>Số thành viên trong phòng ban</p>
+        </div>
+
+        <div class="team-chart__body">
+          <ngx-charts-pie-chart
+            [scheme]="colorScheme"
+            [results]="dataUserByDepartment"
+            [gradient]="true"
+            [doughnut]="true"
+            [legend]="true"
+            legendTitle="Phòng ban"
+            legendPosition="below"
+          >
+          </ngx-charts-pie-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="attendace__analytic">
+        <h3 class="text-center pt-3">Thống kê lương nhân viên các phòng ban</h3>
+        <div class="attendace__chart">
+          <ngx-charts-line-chart
+            [scheme]="colorScheme"
+            [legend]="false"
+            [showXAxisLabel]="true"
+            [showYAxisLabel]="true"
+            [xAxis]="true"
+            [yAxis]="true"
+            [xAxisLabel]="'Tháng'"
+            [yAxisLabel]="'Lương'"
+            [timeline]="true"
+            [results]="multi"
+          >
+          </ngx-charts-line-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="calendar p-5">
+        <h3 class="text-center mb-3">Lịch điểm danh trong tháng</h3>
+        <full-calendar [options]="calendarOptions"></full-calendar>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="dashboard__employee" *ngIf="!isAdmin">
+  <div class="row sumary__list mb-4">
+    <div class="col-3">
+      <div class="sumary__item people">
+        <span class="material-icons">work</span>
+
+        <div class="sumary__content">
+          <p class="sumary__count">{{ totalDayWorker }}</p>
+          <p class="sumary__desc">Số ngày làm việc</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="sumary__item group_work">
+        <span class="material-icons">today</span>
+
+        <div class="sumary__content">
+          <p class="sumary__count">
+            {{ totalDayLeaveHaveGross ? totalDayLeaveHaveGross : 0 }}
+          </p>
+          <p class="sumary__desc">Số ngày nghỉ có lương</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="sumary__item group_add">
+        <span class="material-icons">event_busy</span>
+
+        <div class="sumary__content">
+          <p class="sumary__count">{{ totalDayOff ? totalDayOff : 0 }}</p>
+          <p class="sumary__desc">Số ngày đã nghỉ</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="sumary__item group_off">
+        <span class="material-icons">paid</span>
+
+        <div class="sumary__content">
+          <p class="sumary__count">
+            {{ totalSalary | currency: "VND":"symbol":"1.0-0":"vi-VN" }}
+          </p>
+          <p class="sumary__desc">Lương tháng trước</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <!-- task-list -->
+    <div class="col-12 col-12-list">
+      <!-- task-list -->
+      <div class="task-list">
+        <div class="task-list__header">
+          <p><i class="fas fa-thumbtack"></i> Đơn đang chờ</p>
+          <a href="#"><span class="material-icons">more_horiz</span> </a>
+        </div>
+        <div class="task-list__body">
+          <!-- xác nhận tăng ca nhân viên-->
+          <div class="accept_ot">
+            <h5>Xác nhận tăng ca</h5>
+            <table
+              *ngIf="acceptOTList.length > 0"
+              class="table my-custom-scrollbar"
+            >
+              <thead>
+                <tr class="text-center">
+                  <th scope="col">#</th>
+                  <th scope="col">Lý do tăng ca</th>
+                  <th scope="col">Xác nhận</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  class="text-center"
+                  *ngFor="let confirm of acceptOTList; let i = index"
+                >
+                  <th scope="row">{{ i + 1 }}</th>
+                  <td>{{ confirm.note }}</td>
+                  <td>
+                    <div
+                      *ngIf="!loadConfirm"
+                      class="task-list__link tex-center"
+                    >
+                      <a
+                        (click)="handleAccept(confirm.id, i)"
+                        class="task-list__approve"
+                        ><span class="material-icons">done</span></a
+                      >
+                      <a
+                        (click)="handleNotAccept(confirm.id, i)"
+                        class="task-list__decline"
+                        ><span class="material-icons">thumb_down_off_alt</span>
+                      </a>
+                    </div>
+                    <div *ngIf="loadConfirm" class="task-list__link tex-center">
+                      <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <table
+              *ngIf="acceptOTList.length == 0"
+              class="table my-custom-scrollbar"
+            >
+              <p>Không có lịch tăng ca</p>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- end-task-list -->
+    </div>
+    <!-- end task list -->
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="calendar p-5">
+        <h3 class="text-center mb-3">
+          Lịch điểm danh của nhân viên trong tháng
+        </h3>
+        <full-calendar [options]="calendarOptions"></full-calendar>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,223 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb" style="padding: 0; margin: 0">
+    <li class="breadcrumb-item"><a [routerLink]="['/']">Trang chủ</a></li>
+    <li class="breadcrumb-item active" aria-current="page">
+      Nghỉ phép cá nhân
+    </li>
+  </ol>
+</nav>
+<div class="main_content">
+  <div class="tabs">
+    <input
+      (click)="reloadPage($event)"
+      hidden
+      type="radio"
+      name="tab-css"
+      id="tab-1"
+      checked
+    />
+    <label class="tab-control" for="tab-1">Lịch nghỉ của tôi</label>
+    <input
+      (click)="reloadPageTrash($event)"
+      hidden
+      type="radio"
+      name="tab-css"
+      id="tab-2"
+    />
+    <label class="tab-control" for="tab-2">Thùng rác</label>
+    <div class="tab-content">
+      <div id="tab-panel-1" class="tab-panel">
+        <div class="time-off">
+          <div class="header_timeoff">
+            <ng-template #tipContent let-greeting="greeting">{{
+              greeting
+            }}</ng-template>
+            <h3 class="text-center">
+              Hoạt động nghỉ phép cá nhân
+              <span class="ml-2 list-tooltip">
+                <svg
+                  [ngbTooltip]="tipContent"
+                  placement="top"
+                  triggers="manual"
+                  #t1="ngbTooltip"
+                  (mouseover)="
+                    timeOffTooltip(
+                      t1,
+                      'Chế độ nghỉ : Nghỉ có lương và nghỉ không lương&#13; Chú thích : Lý do xin nghỉ'
+                    )
+                  "
+                  (mouseout)="timeOffTooltip(t1, '')"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-question-circle"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
+                  />
+                  <path
+                    d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"
+                  />
+                </svg>
+              </span>
+            </h3>
+          </div>
+          <table class="table">
+            <thead>
+              <th>#</th>
+              <th>Họ và tên</th>
+              <th>Ngày bắt đầu</th>
+              <th>Ngày kết thúc</th>
+              <th>Chú thich</th>
+              <th>Trạng thái</th>
+              <th>chế độ nghỉ</th>
+              <th>Số ngày nghỉ</th>
+              <th>Số ngày nghỉ có lương</th>
+              <th>Thao tác</th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let time of timeOff; index as i">
+                <td>{{ i + 1 }}</td>
+                <td data-title="Full Name">{{ time.full_name }}</td>
+                <td data-title="Time start">
+                  {{ time.time_start | date: "dd/MM/yyyy" }}
+                </td>
+                <td data-title="Time end">
+                  {{ time.time_end | date: "dd/MM/yyyy" }}
+                </td>
+                <td data-title="Note">{{ time.note }}</td>
+                <td data-title="Status">
+                  {{ time.status == 1 ? "Đã duyệt" : "Chưa phê duyệt" }}
+                </td>
+                <td data-title="Mode leave">
+                  {{
+                    time.mode_leave == 1 ? "Nghỉ có lương" : "Nghỉ không lương"
+                  }}
+                </td>
+                <td>{{ time.number_day_leave }} ngày</td>
+                <td>{{ time.number_mode_leave }} ngày</td>
+                <td *ngIf="time.status !== 1" class="d-flex">
+                  <a
+                    [routerLink]="['/', 'time-off-edit', time.id]"
+                    class="btn btn-primary mr-2"
+                    ><span class="material-icons">
+                      edit_note
+                      </span></a
+                  >
+                  <button
+                    class="btn btn-danger"
+                    (click)="handleDelete(time.id, i)"
+                  >
+                  <span class="material-icons">
+                    delete_forever
+                    </span>
+                  </button>
+                </td>
+                <td *ngIf="time.status == 1">
+                  <button class="btn btn-success">
+                    <span title="Đã phê duyệt" class="material-icons-outlined">
+                      check
+                    </span>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <ngb-pagination class="d-flex justify-content-end" [collectionSize]="collectionSize" [(page)]="page" [maxSize]="5"
+          [rotate]="true" [ellipses]="false" [boundaryLinks]="true" [pageSize]="pageSize"
+          (pageChange)="handlePaginate($event)"></ngb-pagination>
+        </div>
+      </div>
+      <div id="tab-panel-2" class="tab-panel">
+        <div class="trash-time-off">
+          <h3 class="text-center">Thùng rác</h3>
+          <table *ngIf="listTimeOffDelete.length > 0" class="table">
+            <thead>
+              <th>
+                <input
+                  type="checkbox"
+                  [value]="listID"
+                  (change)="checkValue($event)"
+                  [checked]="checkAllDelete"
+                />
+              </th>
+              <th>#</th>
+              <th>Họ tên</th>
+              <th>Ngày bắt đầu</th>
+              <th>Ngày kết thúc</th>
+              <th>Lý do</th>
+              <th>Trạng thái</th>
+              <th>Chế độ</th>
+              <th>Số ngày nghỉ</th>
+              <th>Ngày nghỉ có lương</th>
+              <th>Hành động</th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let time of listTimeOffDelete; index as a">
+                <td>
+                  <input
+                    type="checkbox"
+                    [checked]="checks"
+                    [value]="time.id"
+                    (change)="checkResult($event)"
+                  />
+                </td>
+                <td>{{ a + 1 }}</td>
+                <td>{{ time.full_name }}</td>
+                <td>{{ time.time_start | date: "dd/MM/yyyy" }}</td>
+                <td>{{ time.time_end | date: "dd/MM/yyyy" }}</td>
+                <td>{{ time.note }}</td>
+                <td>{{ time.status == 1 ? "Đã duyệt" : "Chưa phê duyệt" }}</td>
+                <td>
+                  {{
+                    time.mode_leave == 1 ? "Nghỉ có lương" : "Nghỉ không lương"
+                  }}
+                </td>
+                <td>{{ time.number_day_leave }} ngày</td>
+                <td>{{ time.number_mode_leave }} ngày</td>
+                <td>
+                  <button
+                    title="Xóa vĩnh viễn"
+                    class="btn btn-danger"
+                    (click)="handleDestroy(time.id, i)"
+                  >
+                    <span title="Xóa vĩnh viễn" class="material-icons">
+                      delete_forever
+                    </span>
+                  </button>
+                  <button
+                    title="Khôi phục"
+                    class="btn btn-success"
+                    (click)="handleRestore(time.id, i)"
+                  >
+                    <span title="Khôi phục" class="material-icons">
+                      settings_backup_restore
+                    </span>
+                  </button>
+                </td>
+              </tr>
+              
+            </tbody>
+          </table>
+          <div *ngIf="listID.length > 0">
+            <button
+              (click)="destroyAll()"
+              style="margin-top: 10px; min-width: 100px"
+              class="btn btn-danger"
+            >
+              Xóa tất cả
+            </button>
+          </div>
+          <table *ngIf="listTimeOffDelete.length == 0">
+            <p style="padding-left: 1rem">Thùng rác rỗng</p>
+          </table>
+          <ngb-pagination class="d-flex justify-content-end" [collectionSize]="collectionSize" [(page)]="page" [maxSize]="5"
+          [rotate]="true" [ellipses]="false" [boundaryLinks]="true" [pageSize]="pageSize"
+          (pageChange)="handlePaginate2($event)"></ngb-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

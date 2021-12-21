@@ -1,0 +1,48 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb" style="padding: 0; margin: 0">
+    <li class="breadcrumb-item"><a [routerLink]="['/']">Trang chủ</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Danh sách chức vụ</li>
+  </ol>
+</nav>
+<div class="position">
+  <h3 class="text-center">
+    Danh sách chức vụ<a [routerLink]="['/', 'position-add']"
+      ><span class="material-icons-outlined"> add_circle_outline </span></a
+    >
+  </h3>
+  <div class="row">
+    <Table class="table">
+      <thead>
+        <th>#</th>
+        <th>Vị trí</th>
+        <th>Thao tác</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let position of positions; index as i">
+          <td data-title="#">{{ position.id }}</td>
+          <td data-title="Name">{{ position.name }}</td>
+          <td data-title="Action">
+            <div class="osition">
+              <a
+                class="btn btn-primary"
+                [routerLink]="['/', 'position-edit', position.id]"
+              >
+              <span title="Chỉnh sửa" class="material-icons">
+                edit_note
+                </span>
+              </a>
+              <!-- <button
+                class="btn btn-danger"
+                (click)="handleDelete(position.id, i)"
+              >
+                Delete
+              </button> -->
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </Table>
+  </div>
+
+  <!-- </div> -->
+</div>
